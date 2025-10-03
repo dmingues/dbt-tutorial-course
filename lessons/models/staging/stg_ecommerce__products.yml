@@ -14,11 +14,19 @@ models:
         description: ""
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
 
       - name: retail_price
         description: ""
         tests:
           - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+          - dbt_utils.expression_is_true:
+              name: retail_price_greate_than_cost
+              expression: ">= cost"
+              where: "retail_price IS NOT NULL"
 
       - name: department
         description: ""
@@ -28,3 +36,5 @@ models:
               values:
                 - "Men"
                 - "Women"
+              quote: true
+              severity: error
